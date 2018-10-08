@@ -1,32 +1,31 @@
 language: python
 python:
-  - 3.6
-
-# Setup anaconda
+- 3.6
+env:
+  matrix:
+  - PACKAGENAME=jsoncpp
+  global:
+    secure: SUqcGP1m1DefRH7ViCbxB3k9Oi0MWneP1SIwpmSS+QFnjK5c1/zUBvuhoJ7cBIh0o3KJXDvYUvLMSZ4mKbTSG61gtHqGwzlRe6OFTpn6PgU/DeG56bKRWnfr3fr6P1OU0XQ6nkocsuxNxvlqkrvQ39+2G0oEY39IhMbjcl1Ldk/0gSpAUhwaQ5M+60eYymd3Tt2fnebFgaOZYL7ZM8Weq/iXmk+EaVO6g1EZ4Aeao3Dpz3GY4Y506OVichNGYcCfsE/HPLdEDqzvWjRNDjT00chxmRcqPBaBIY8SqMTQefCN2/fOoWpvklG4zkZJJADtH40c5kh+aHmdnppPDQN9/29B2jI6UXR4UGRsGxv/83KA5ufETPUfP9hMNIfDOtS7DeDKMSAOgapfM/79gYhP/BnIJBVOKDdz7RiDARhx4SnZaT9d9cqHcEJsNkHUu9j2JiU8D4o60sNH3qUbAExIWMkGi33WAiMXvBHX3VDlDYa2Liwyd8hIQsEwrT/b4t/TSycbGko2ZaRiukdfDY0uHdxyBUyIb8AvamUs/oPRqkHHESqVGkFFhSb6OkGhIRg84bqnWnG6JsMUvK4r/z0hREEPw6C4AuyhZI0ONKyo8ExDlZ3YbuzO7GvI3HRSAQMn1+dYxBnLY8HVVSoa6C1H9tsCFS3tYCZdwvioZoTqA2k=
 before_install:
-  - wget http://repo.continuum.io/miniconda/Miniconda-latest-Linux-x86_64.sh -O miniconda.sh
-  - chmod +x miniconda.sh
-  - ./miniconda.sh -b
-  - export PATH=$HOME/miniconda2/bin:$PATH
-  - conda update --yes -q conda
-  - conda config --set always_yes true
-  - conda config --set anaconda_upload no
-
-# Install packages
+- wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh
+- chmod +x miniconda.sh
+- "./miniconda.sh -b"
+- export PATH=$HOME/miniconda3/bin:$PATH
+- conda update --yes -q conda
+- conda config --set always_yes true
+- conda config --set anaconda_upload no
 install:
-  - conda install -q python=$TRAVIS_PYTHON_VERSION pip requests conda-build jinja2 anaconda-client 
-  # install additional packages with conda and pip
-  - conda build conda-recipe # this assumes that the conda recipe folder is called conda-recipe and is at the current workind dir
-  - conda install --use-local $PACKAGENAME
-
+- conda create -q -n test-env python=$TRAVIS_PYTHON_VERSION
+- source activate test-env
+- conda install conda-build
+- conda install anaconda-client
+- conda build conda-recipe
+- conda install --use-local $PACKAGENAME
 after_success:
-# Change permissions for Anaconda deployment script
-  - chmod +x ./deploy_anaconda.sh
-
+- chmod +x ./deploy_anaconda.sh
 deploy:
- # Deploy to Anaconda.org
-  - provider: script
-    script: ./deploy_anaconda.sh
-    on:
-      tags: true
+- provider: script
+  script: "./deploy_anaconda.sh"
+  on:
+    tags: true
 skip_cleanup: true
