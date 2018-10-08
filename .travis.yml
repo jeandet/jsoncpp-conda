@@ -22,10 +22,5 @@ install:
 - conda build conda-recipe
 - conda install --use-local $PACKAGENAME
 after_success:
-- chmod +x ./deploy_anaconda.sh
-deploy:
-- provider: script
-  script: "./deploy_anaconda.sh"
-  on:
-    tags: true
+- anaconda -t $ANACONDA_TOKEN upload $HOME/miniconda3/envs/test-env/conda-bld/linux-64/jsoncpp-*.tar.bz2
 skip_cleanup: true
