@@ -1,0 +1,20 @@
+package:
+  name: jsoncpp
+  version: 1.8.4
+source:
+  git_rev: 1.8.4
+  git_url: https://github.com/open-source-parsers/jsoncpp
+requirements:
+  build:
+    - {{ compiler('cxx') }}
+    - meson
+    - git
+    - cmake
+  host:
+    - python
+about:
+  home: https://github.com/open-source-parsers/jsoncpp
+  license: MIT
+  license_file: LICENSE
+
+
