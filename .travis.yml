@@ -15,10 +15,9 @@ before_install:
 - conda config --set always_yes true
 - conda config --set anaconda_upload no
 install:
-- conda create -q -n test-env python=$TRAVIS_PYTHON_VERSION
+- conda create -q -n test-env python=$TRAVIS_PYTHON_VERSION conda-build anaconda-client
 - source activate test-env
-- conda install conda-build
-- conda install anaconda-client
+script:
 - conda build conda-recipe
 - conda install --use-local $PACKAGENAME
 after_success:
