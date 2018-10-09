@@ -10,8 +10,6 @@ requirements:
     - meson
     - git
     - cmake
-  host:
-    - python
 about:
   home: https://github.com/open-source-parsers/jsoncpp
   license: MIT
